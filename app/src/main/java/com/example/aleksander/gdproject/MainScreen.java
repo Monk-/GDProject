@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import com.example.aleksander.gdproject.Database.TaskDbHelper;
 import com.example.aleksander.gdproject.List.Task;
 import com.example.aleksander.gdproject.List.TaskListAdapter;
 
@@ -15,15 +16,17 @@ public class MainScreen extends AppCompatActivity {
 
     private TaskListAdapter taskListAdapter;
     private ListView listView;
+    private TaskDbHelper taskDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+        taskDbHelper = new TaskDbHelper(getApplicationContext());
         listView = (ListView)findViewById(R.id.listViewMainScreen);
-        List<Task> list = new ArrayList<>();
-        list.add(new Task("first", "really", new Date(12312313L)));
-        list.add(new Task("second", "really", new Date(12312313L)));
+        taskDbHelper.addToDb(new Task("first", "really", "121", "121", "121"));
+        taskDbHelper.addToDb(new Task("second", "really", "1233", "121", "121"));
+        List<Task> list = taskDbHelper.getAllTasks();
         taskListAdapter = new TaskListAdapter(this, list);
         listView.setAdapter(taskListAdapter);
     }
