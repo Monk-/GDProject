@@ -18,7 +18,7 @@ public class MainScreen extends AppCompatActivity {
 
     private TaskListAdapter taskListAdapter;
     private ListView listView;
-    public static TaskDbHelper taskDbHelper;
+    protected static TaskDbHelper taskDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
