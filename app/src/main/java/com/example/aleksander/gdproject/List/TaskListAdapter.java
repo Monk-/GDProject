@@ -9,13 +9,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.aleksander.gdproject.R;
-
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.zip.Inflater;
+
+
 
 
 public class TaskListAdapter extends BaseAdapter {
