@@ -1,23 +1,17 @@
 package com.example.aleksander.gdproject.Activities;
 
-import android.content.DialogInterface;
+
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-
 import com.example.aleksander.gdproject.Database.TaskDbHelper;
 import com.example.aleksander.gdproject.Dialogs.EditDeleteDialog;
 import com.example.aleksander.gdproject.List.Task;
 import com.example.aleksander.gdproject.List.TaskListAdapter;
 import com.example.aleksander.gdproject.R;
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MainScreen extends AppCompatActivity {
