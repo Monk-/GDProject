@@ -1,4 +1,4 @@
-package com.example.aleksander.gamedesireproject.List;
+package com.example.aleksander.gdproject.List;
 
 
 import android.app.Activity;
@@ -10,14 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.aleksander.gamedesireproject.R;
+import com.example.aleksander.gdproject.R;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.zip.Inflater;
-
-
 
 
 public class TaskListAdapter extends BaseAdapter {
@@ -46,7 +44,7 @@ public class TaskListAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return taskArray.get(position);
     }
 
     @Override
@@ -60,10 +58,10 @@ public class TaskListAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.row_item, parent, false);
             viewHolder = new ViewHolderItem();
-            viewHolder.titleText = (TextView) convertView.findViewById(R.id.TaskTitle);
-            viewHolder.iconView = (ImageView) convertView.findViewById(R.id.TaskImage);
-            viewHolder.descriptionText = (TextView) convertView.findViewById(R.id.TaskDescription);
-            viewHolder.dateText = (TextView) convertView.findViewById(R.id.TaskExpire);
+            viewHolder.titleText = (TextView) convertView.findViewById(R.id.titleText);
+            viewHolder.iconView = (ImageView) convertView.findViewById(R.id.iconView);
+            viewHolder.descriptionText = (TextView) convertView.findViewById(R.id.descriptionText);
+            viewHolder.dateText = (TextView) convertView.findViewById(R.id.dateText);
             convertView.setTag(viewHolder);
         }
         else
@@ -72,10 +70,9 @@ public class TaskListAdapter extends BaseAdapter {
         }
 
         Task task = (Task) getItem(position);
-        task.setTitle(viewHolder.titleText.toString());
-        task.setDescription(viewHolder.titleText.toString());
-        Calendar c = Calendar.getInstance();
-        task.setTime_end(new Date(c.get(Calendar.SECOND)));
+        viewHolder.titleText.setText(task.getTitle());
+        viewHolder.descriptionText.setText(task.getDescription());
+        viewHolder.dateText.setText("now");
         return convertView;
     }
 }

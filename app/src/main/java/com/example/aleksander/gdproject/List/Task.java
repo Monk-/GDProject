@@ -1,5 +1,4 @@
-package com.example.aleksander.gamedesireproject.List;
-
+package com.example.aleksander.gdproject.List;
 
 import android.widget.ImageView;
 
