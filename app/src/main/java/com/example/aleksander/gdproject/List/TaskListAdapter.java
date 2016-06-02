@@ -81,8 +81,7 @@ public class TaskListAdapter extends BaseAdapter {
         viewHolder.descriptionText.setText(task.getDescription());
         picasso
                 .load(task.getUrl())
-                .placeholder(R.drawable.ic_add_white_36dp)
-                .error(R.drawable.ic_date_range_black_18dp)
+                .placeholder(R.drawable.no_photo)
                 .resizeDimen(R.dimen.list_detail_image_size,R.dimen.list_detail_image_size)
                 .centerInside()
                 .into(viewHolder.iconView);
