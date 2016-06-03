@@ -22,6 +22,7 @@ public class TaskListAdapter extends BaseAdapter
     private List<Task> taskArray;
     private LayoutInflater inflater;
     private Picasso picasso;
+    private final static String NOW = "No date set";
     //private ImageLoader imageLoader;
 
     static class ViewHolderItem
@@ -84,19 +85,21 @@ public class TaskListAdapter extends BaseAdapter
         Task task = (Task) getItem(position);
         viewHolder.titleText.setText(task.getTitle());
         viewHolder.descriptionText.setText(task.getDescription());
-        picasso
-                .load(task.getUrl())
-                .placeholder(R.drawable.no_photo)
-                .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
-                .centerInside()
-                .into(viewHolder.iconView);
-
+        if (!task.getUrl().equals(""))
+        {
+            picasso
+                    .load(task.getUrl())
+                    .placeholder(R.drawable.no_photo)
+                    .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
+                    .centerInside()
+                    .into(viewHolder.iconView);
+        }
+        viewHolder.dateText.setText(task.getTime_end().equals("") ? NOW : task.getTime_end().substring(0,10));
 //       async download images with volley
 
 //        imageLoader.get(task.getUrl(),
 //                ImageLoader.getImageListener(viewHolder.iconView,R.drawable.ic_add_white_36dp, // noimage
 //                        R.drawable.ic_date_range_black_18dp)); // error
-        viewHolder.dateText.setText("now");
         return convertView;
     }
 }

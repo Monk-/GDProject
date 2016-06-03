@@ -33,6 +33,8 @@ public class SecondScreen extends AppCompatActivity
     private EditText editDescription;
     private EditText editUrl;
     private static EditText editDate;
+    private final static String CLICK_TO_SEE = "Click to see";
+    private final static String NO_DESCRIPTION = "No description";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -103,6 +105,12 @@ public class SecondScreen extends AppCompatActivity
 
     }
 
+    public void backToMainScreen()
+    {
+        Intent myIntent = new Intent(SecondScreen.this, MainScreen.class);
+        SecondScreen.this.startActivity(myIntent);
+    }
+
     private void onAddClick()
     {
         String temp = editTitle.getText().toString();
@@ -114,11 +122,12 @@ public class SecondScreen extends AppCompatActivity
         {
             taskDbHelper.addToDb(new Task(
                     temp,
-                    editDescription.getText().toString(),
+                    editDescription.getText().toString().equals("") ? NO_DESCRIPTION : CLICK_TO_SEE,
                     date == null ? "" : date.toString(),
                     new DateTime().toString(),
                     editUrl.getText().toString()
             ));
+            backToMainScreen();
         }
 
     }

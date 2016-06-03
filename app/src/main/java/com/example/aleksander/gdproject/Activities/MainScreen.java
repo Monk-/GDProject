@@ -33,8 +33,6 @@ public class MainScreen extends AppCompatActivity
         setContentView(R.layout.activity_main_screen);
         taskDbHelper = new TaskDbHelper(getApplicationContext());
         listView = (ListView) findViewById(R.id.listViewMainScreen);
-        taskDbHelper.addToDb(new Task("first", "really", "121", "121", "https://j7w7h8q2.ssl.hwcdn.net/achievements/ach_ipad/6.10.png"));
-        taskDbHelper.addToDb(new Task("second", "really", "1233", "121", "ht"));
         final List<Task> list = taskDbHelper.getAllTasks();
         taskListAdapter = new TaskListAdapter(this, list);
         listView.setAdapter(taskListAdapter);
@@ -86,8 +84,8 @@ public class MainScreen extends AppCompatActivity
     public void onUpdate()
     {
         taskListAdapter = new TaskListAdapter(this, taskDbHelper.getAllTasks());
-        taskListAdapter.notifyDataSetChanged();
-        listView.setAdapter(taskListAdapter);
+        ((TaskListAdapter)listView.getAdapter()).notifyDataSetChanged();
+        //listView.setAdapter(taskListAdapter);
     }
 
 

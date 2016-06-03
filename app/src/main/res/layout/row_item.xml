@@ -19,11 +19,12 @@
         android:id="@+id/linearLayoutTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/iconView"
-        android:layout_toRightOf="@+id/iconView">
+        android:layout_toRightOf="@+id/iconView"
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/iconTitle"
@@ -42,7 +43,7 @@
             android:paddingRight="10dp"
             android:paddingStart="10dp"
             android:text="@string/name"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -53,11 +54,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayoutTitle"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/iconView"
-        android:layout_toRightOf="@+id/iconView">
+        android:layout_toRightOf="@+id/iconView"
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/iconExpire"
@@ -72,12 +74,8 @@
             android:id="@+id/textExpire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingStart="10dp"
             android:text="@string/name"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -88,11 +86,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayoutTitle"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/linearLayoutExpire"
-        android:layout_toRightOf="@+id/linearLayoutExpire">
+        android:layout_toRightOf="@+id/linearLayoutExpire"
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/iconDescription"
@@ -107,12 +106,10 @@
             android:id="@+id/textDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingStart="10dp"
+
+
             android:text="@string/name"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
     </LinearLayout>
