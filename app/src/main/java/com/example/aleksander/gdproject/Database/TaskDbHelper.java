@@ -98,6 +98,32 @@ public class TaskDbHelper extends SQLiteOpenHelper
         return list;
     }
 
+    public Task getTaskByTitle(String title)
+    {
+        SQLiteDatabase db = connectToDb();
+        String query = buildQueryWhereTitle(title);
+        Cursor cursor = createCursor(db, query);
+        Task task = getTask(cursor);
+        closeDb(db);
+        return task;
+    }
+
+    private String buildQueryWhereTitle(String title)
+    {
+        return "SELECT  * FROM " + ColumnNames.TaskEntry.TABLE_NAME + " WHERE title='" + title + "'";
+    }
+
+    private Task getTask(Cursor cursor)
+    {
+        if (cursor.moveToFirst())
+        {
+            return new Task(cursor.getString(1), cursor.getString(2),
+                    cursor.getString(3), cursor.getString(4), cursor.getString(5));
+        }
+        return null;
+    }
+
+
     public void deleteTask(String taskTitle)
     {
         SQLiteDatabase db = connectToDb();

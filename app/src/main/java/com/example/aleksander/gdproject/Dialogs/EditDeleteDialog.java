@@ -62,6 +62,7 @@ public class EditDeleteDialog extends DialogFragment
             {
                 Intent myIntent = new Intent(activity, SecondScreen.class);
                 myIntent.putExtra("action", TYPE_ACTION_EDIT); //Optional parameters
+                myIntent.putExtra("taskTitle", getArguments().getString("task"));
                 startActivity(myIntent);
                 dismiss();
             }

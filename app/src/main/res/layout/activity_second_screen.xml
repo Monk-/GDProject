@@ -37,6 +37,8 @@
             android:layout_marginStart="5dp"
             android:layout_weight="90"
             android:hint="@string/select_date"
+            android:focusable="false"
+            android:clickable="false"
             android:onClick="showDatePickerDialog" />
 
         <ImageView

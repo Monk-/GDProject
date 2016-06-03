@@ -42,8 +42,9 @@ public class SecondScreen extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second_screen);
         JodaTimeAndroid.init(this);  // init joda time
-        actionTypeChange();
         initializeEditTexts();
+        actionTypeChange();
+
     }
 
     private void initializeEditTexts()
@@ -91,6 +92,7 @@ public class SecondScreen extends AppCompatActivity
                         }
 
                     });
+                    setFields(intent.getStringExtra("taskTitle"));
                     break;
             }
         }
@@ -100,15 +102,22 @@ public class SecondScreen extends AppCompatActivity
         }
     }
 
+    private void setFields(String title)
+    {
+
+        Task task = taskDbHelper.getTaskByTitle(title);
+        editTitle.setText(task.getTitle());
+        DateTime dateTime = new DateTime(task.getTime_end());
+        editDate.setText(String.format(Locale.getDefault(),
+                "%d/%d/%d", dateTime.getDayOfMonth(),
+                dateTime.getMonthOfYear(), dateTime.getYear()));
+        editUrl.setText(task.getUrl());
+        editDescription.setText(task.getDescription());
+    }
+
     private void onEditClick()
     {
 
-    }
-
-    public void backToMainScreen()
-    {
-        Intent myIntent = new Intent(SecondScreen.this, MainScreen.class);
-        SecondScreen.this.startActivity(myIntent);
     }
 
     private void onAddClick()
@@ -130,6 +139,12 @@ public class SecondScreen extends AppCompatActivity
             backToMainScreen();
         }
 
+    }
+
+    public void backToMainScreen()
+    {
+        Intent myIntent = new Intent(SecondScreen.this, MainScreen.class);
+        SecondScreen.this.startActivity(myIntent);
     }
 
 

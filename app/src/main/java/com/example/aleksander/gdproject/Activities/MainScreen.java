@@ -40,12 +40,10 @@ public class MainScreen extends AppCompatActivity
         listView.setLongClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
-
-
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id)
             {
-
+                //TODO task view
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
@@ -85,10 +83,8 @@ public class MainScreen extends AppCompatActivity
 
     public void onUpdate(int position)
     {
-        //TODO on delete doesnt work
         list.remove(position);
         taskListAdapter.notifyDataSetChanged();
-        //listView.invalidateViews();
     }
 
 

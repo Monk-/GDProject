@@ -91,7 +91,8 @@ public class TaskListAdapter extends BaseAdapter
                 .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
                 .centerInside()
                 .into(viewHolder.iconView);
-        viewHolder.dateText.setText(task.getTime_end().equals("") ? NOW : task.getTime_end().substring(0, 10));
+        viewHolder.dateText.setText(task.getTime_end().equals("") &&
+                task.getTime_end().length() >= 10 ? NOW : task.getTime_end().substring(0, 10));
 //       async download images with volley
 
 //        imageLoader.get(task.getUrl(),
