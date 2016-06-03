@@ -32,7 +32,6 @@ public class YouSureDialog extends DialogFragment
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         dialogView = inflater.inflate(R.layout.you_sure_fragment, (ViewGroup) null);
-        TextView tV = (TextView) dialogView.findViewById(R.id.delete);
         builder.setView(dialogView)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener()
                 {
@@ -40,7 +39,7 @@ public class YouSureDialog extends DialogFragment
                     {
                         taskDbHelper.deleteTask(getArguments().getString("task"));
                         MainScreen activity = (MainScreen) getActivity();
-                        activity.onUpdate();
+                        activity.onUpdate(getArguments().getInt("position"));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener()

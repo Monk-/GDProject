@@ -25,6 +25,7 @@ public class MainScreen extends AppCompatActivity
     public static TaskDbHelper taskDbHelper;
     public final static String TYPE_ACTION_ADD = "Add";
     public final static String TYPE_ACTION_EDIT = "Edit";
+    private static List<Task> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,7 +34,7 @@ public class MainScreen extends AppCompatActivity
         setContentView(R.layout.activity_main_screen);
         taskDbHelper = new TaskDbHelper(getApplicationContext());
         listView = (ListView) findViewById(R.id.listViewMainScreen);
-        final List<Task> list = taskDbHelper.getAllTasks();
+        list = taskDbHelper.getAllTasks();
         taskListAdapter = new TaskListAdapter(this, list);
         listView.setAdapter(taskListAdapter);
         listView.setLongClickable(true);
@@ -54,7 +55,7 @@ public class MainScreen extends AppCompatActivity
                                            int position, long id)
             {
                 Task task = list.get(position);
-                showEditDialog(task);
+                showEditDialog(task, position);
                 taskListAdapter.notifyDataSetChanged();
                 return true;
             }
@@ -71,21 +72,23 @@ public class MainScreen extends AppCompatActivity
     }
 
 
-    private void showEditDialog(Task task)
+    private void showEditDialog(Task task, int position)
     {
         FragmentManager fm = getSupportFragmentManager();
         EditDeleteDialog editDeleteDialog = new EditDeleteDialog();
         Bundle args = new Bundle();
         args.putString("task", task.getTitle());
+        args.putInt("position", position);
         editDeleteDialog.setArguments(args);
         editDeleteDialog.show(fm, "edit or delete");
     }
 
-    public void onUpdate()
+    public void onUpdate(int position)
     {
-        taskListAdapter = new TaskListAdapter(this, taskDbHelper.getAllTasks());
-        ((TaskListAdapter)listView.getAdapter()).notifyDataSetChanged();
-        //listView.setAdapter(taskListAdapter);
+        //TODO on delete doesnt work
+        list.remove(position);
+        taskListAdapter.notifyDataSetChanged();
+        //listView.invalidateViews();
     }
 
 

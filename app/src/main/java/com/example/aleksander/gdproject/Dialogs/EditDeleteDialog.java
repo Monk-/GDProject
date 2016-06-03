@@ -48,6 +48,7 @@ public class EditDeleteDialog extends DialogFragment
                 YouSureDialog youSureDialog = new YouSureDialog();
                 Bundle args = new Bundle();
                 args.putString("task", getArguments().getString("task"));
+                args.putInt("position", getArguments().getInt("position"));
                 youSureDialog.setArguments(args);
                 youSureDialog.show(fm, "you are sure?");
                 dismiss();

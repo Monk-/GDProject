@@ -85,16 +85,13 @@ public class TaskListAdapter extends BaseAdapter
         Task task = (Task) getItem(position);
         viewHolder.titleText.setText(task.getTitle());
         viewHolder.descriptionText.setText(task.getDescription());
-        if (!task.getUrl().equals(""))
-        {
-            picasso
-                    .load(task.getUrl())
-                    .placeholder(R.drawable.no_photo)
-                    .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
-                    .centerInside()
-                    .into(viewHolder.iconView);
-        }
-        viewHolder.dateText.setText(task.getTime_end().equals("") ? NOW : task.getTime_end().substring(0,10));
+        picasso
+                .load(task.getUrl().equals("") ? "nope" : task.getUrl())
+                .placeholder(R.drawable.no_photo)
+                .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
+                .centerInside()
+                .into(viewHolder.iconView);
+        viewHolder.dateText.setText(task.getTime_end().equals("") ? NOW : task.getTime_end().substring(0, 10));
 //       async download images with volley
 
 //        imageLoader.get(task.getUrl(),
