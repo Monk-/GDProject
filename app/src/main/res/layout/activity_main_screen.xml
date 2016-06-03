@@ -20,6 +20,7 @@
         android:layout_margin="16dp"
         android:layout_gravity="bottom|end"
         android:clickable="true"
+        android:onClick="showAddActivity"
         app:backgroundTint="@color/lightGreen"
         android:src="@drawable/ic_add_white_36dp"
         app:layout_anchor="@id/listViewMainScreen"
