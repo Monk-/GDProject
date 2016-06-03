@@ -37,7 +37,7 @@
             android:layout_marginStart="5dp"
             android:layout_weight="90"
             android:hint="@string/select_date"
-            android:inputType="none" />
+            android:onClick="showDatePickerDialog" />
 
         <ImageView
             android:id="@+id/imageButton1"
@@ -84,7 +84,6 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:clickable="true"
-            android:src="@drawable/ic_add_white_36dp"
             app:backgroundTint="@color/lightGreen"
             app:layout_anchorGravity="bottom|right|end" />
 

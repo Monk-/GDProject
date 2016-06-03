@@ -12,7 +12,7 @@
         android:paddingEnd="5dp"
         android:paddingLeft="5dp"
         android:paddingStart="5dp"
-        android:background="@color/teal"/>
+        android:background="@color/teal" />
 
 
     <LinearLayout

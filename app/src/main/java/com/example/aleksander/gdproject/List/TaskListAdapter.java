@@ -16,9 +16,8 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 
-
-
-public class TaskListAdapter extends BaseAdapter {
+public class TaskListAdapter extends BaseAdapter
+{
 
     private List<Task> taskArray;
     private LayoutInflater inflater;
@@ -33,36 +32,42 @@ public class TaskListAdapter extends BaseAdapter {
         TextView dateText;
     }
 
-    public TaskListAdapter(Activity activity, List<Task> taskArray) {
+    public TaskListAdapter(Activity activity, List<Task> taskArray)
+    {
         this.taskArray = taskArray;
-        this.inflater = ( LayoutInflater)activity.
+        this.inflater = (LayoutInflater) activity.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.picasso = Picasso.with(activity);
         // uncomment to make volley work
-       // VolleyHelper.init(activity);
-       // this.imageLoader = VolleyHelper.getImageLoader();
+        // VolleyHelper.init(activity);
+        // this.imageLoader = VolleyHelper.getImageLoader();
 
     }
 
     @Override
-    public int getCount() {
+    public int getCount()
+    {
         return taskArray.size();
     }
 
     @Override
-    public Object getItem(int position) {
+    public Object getItem(int position)
+    {
         return taskArray.get(position);
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int position)
+    {
         return position;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
         ViewHolderItem viewHolder;
-        if (convertView == null) {
+        if (convertView == null)
+        {
             convertView = inflater.inflate(R.layout.row_item, parent, false);
             viewHolder = new ViewHolderItem();
             viewHolder.titleText = (TextView) convertView.findViewById(R.id.textTitle);
@@ -82,7 +87,7 @@ public class TaskListAdapter extends BaseAdapter {
         picasso
                 .load(task.getUrl())
                 .placeholder(R.drawable.no_photo)
-                .resizeDimen(R.dimen.list_detail_image_size,R.dimen.list_detail_image_size)
+                .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
                 .centerInside()
                 .into(viewHolder.iconView);
 

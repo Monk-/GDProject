@@ -9,8 +9,7 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listViewMainScreen"
-        />
+        android:id="@+id/listViewMainScreen" />
 
 
     <android.support.design.widget.FloatingActionButton
@@ -24,5 +23,5 @@
         app:backgroundTint="@color/lightGreen"
         android:src="@drawable/ic_add_white_36dp"
         app:layout_anchor="@id/listViewMainScreen"
-        app:layout_anchorGravity="bottom|right|end"/>
-    </android.support.design.widget.CoordinatorLayout>
+        app:layout_anchorGravity="bottom|right|end" />
+</android.support.design.widget.CoordinatorLayout>

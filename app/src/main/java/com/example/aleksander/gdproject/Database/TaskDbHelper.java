@@ -12,12 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TaskDbHelper extends SQLiteOpenHelper {
+public class TaskDbHelper extends SQLiteOpenHelper
+{
 
     public static final int DATABASE_VERSION = 1; // If change then increment version.
     public static final String DATABASE_NAME = "Tasks.db";
 
-    public TaskDbHelper(Context context) {
+    public TaskDbHelper(Context context)
+    {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -26,7 +28,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = connectToDb();
         ContentValues values = setValues(come);
-        insertToDb(db,values);
+        insertToDb(db, values);
         closeDb(db);
     }
 
@@ -64,7 +66,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = connectToDb();       // open
         String query = buildQuery();             // build query
-        Cursor cursor = createCursor(db,query);  // create cursor
+        Cursor cursor = createCursor(db, query);  // create cursor
         List<Task> tasks = getAllData(cursor);  // get tasks
         db.close();                             // close db
         return tasks;
@@ -83,11 +85,13 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     private List<Task> getAllData(Cursor cursor)
     {
         List<Task> list = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            do {
-                    Task task = new Task(cursor.getString(1), cursor.getString(2),
-                            cursor.getString(3), cursor.getString(4), cursor.getString(5));
-                    list.add(task);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                Task task = new Task(cursor.getString(1), cursor.getString(2),
+                        cursor.getString(3), cursor.getString(4), cursor.getString(5));
+                list.add(task);
             }
             while (cursor.moveToNext());
         }
@@ -101,7 +105,8 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         closeDb(db);
     }
 
-   private void delete(SQLiteDatabase db, String taskTitle) {
+    private void delete(SQLiteDatabase db, String taskTitle)
+    {
         db.delete(ColumnNames.TaskEntry.TABLE_NAME, //table name
                 " title = ?",  // selections
                 new String[]{taskTitle}); //selections args
@@ -109,7 +114,8 @@ public class TaskDbHelper extends SQLiteOpenHelper {
 
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db)
+    {
         String CREATE_TASK_TABLE = "CREATE TABLE " + ColumnNames.TaskEntry.TABLE_NAME + " ( " +
                 ColumnNames.TaskEntry.COLUMN_NAME_TASK_ID + " INTEGER PRIMARY KEY, " +
                 ColumnNames.TaskEntry.COLUMN_NAME_TITLE + " TEXT NOT NULL UNIQUE, " +
@@ -120,7 +126,9 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TASK_TABLE);
 
     }
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+    {
         db.execSQL("DROP TABLE IF EXISTS " + ColumnNames.TaskEntry.TABLE_NAME);
         this.onCreate(db);
     }
