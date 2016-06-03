@@ -25,6 +25,9 @@ public class TaskListAdapter extends BaseAdapter
     private final static String NOW = "No date set";
     //private ImageLoader imageLoader;
 
+    private final static String CLICK_TO_SEE = "Click to see";
+    private final static String NO_DESCRIPTION = "No description";
+
     static class ViewHolderItem
     {
         TextView titleText;
@@ -84,15 +87,21 @@ public class TaskListAdapter extends BaseAdapter
 
         Task task = (Task) getItem(position);
         viewHolder.titleText.setText(task.getTitle());
-        viewHolder.descriptionText.setText(task.getDescription());
+        viewHolder.descriptionText.setText(task.getDescription().equals("") ? NO_DESCRIPTION : CLICK_TO_SEE);
         picasso
                 .load(task.getUrl().equals("") ? "nope" : task.getUrl())
                 .placeholder(R.drawable.no_photo)
                 .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
                 .centerInside()
                 .into(viewHolder.iconView);
-        viewHolder.dateText.setText(task.getTime_end().equals("") &&
-                task.getTime_end().length() >= 10 ? NOW : task.getTime_end().substring(0, 10));
+        if (task.getTime_end().length() >=10)
+        {
+            viewHolder.dateText.setText(task.getTime_end().equals("") ? NOW : task.getTime_end().substring(0, 10));
+        }
+        else
+        {
+            viewHolder.dateText.setText(NOW);
+        }
 //       async download images with volley
 
 //        imageLoader.get(task.getUrl(),

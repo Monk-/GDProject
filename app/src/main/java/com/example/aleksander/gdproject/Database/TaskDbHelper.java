@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.aleksander.gdproject.List.Task;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,6 +138,19 @@ public class TaskDbHelper extends SQLiteOpenHelper
         db.delete(ColumnNames.TaskEntry.TABLE_NAME, //table name
                 " title = ?",  // selections
                 new String[]{taskTitle}); //selections args
+    }
+
+    public void update(Task task, String oldTitle)
+    {
+        SQLiteDatabase db = connectToDb();
+        ContentValues cv = new ContentValues();
+        cv.put(ColumnNames.TaskEntry.COLUMN_NAME_TITLE, task.getTitle());
+        cv.put(ColumnNames.TaskEntry.COLUMN_NAME_TIME_END, task.getTime_end());
+        cv.put(ColumnNames.TaskEntry.COLUMN_NAME_IMAGE_URL, task.getUrl());
+        cv.put(ColumnNames.TaskEntry.COLUMN_NAME_DESCRIPTION, task.getDescription());
+        cv.put(ColumnNames.TaskEntry.COLUMN_NAME_CREATED, new DateTime().toString());
+        db.update(ColumnNames.TaskEntry.TABLE_NAME, cv, "title=?", new String[]{oldTitle});
+        closeDb(db);
     }
 
 

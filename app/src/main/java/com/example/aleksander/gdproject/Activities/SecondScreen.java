@@ -33,8 +33,8 @@ public class SecondScreen extends AppCompatActivity
     private EditText editDescription;
     private EditText editUrl;
     private static EditText editDate;
-    private final static String CLICK_TO_SEE = "Click to see";
-    private final static String NO_DESCRIPTION = "No description";
+
+    private String oldTitle; // only for edit
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -104,10 +104,11 @@ public class SecondScreen extends AppCompatActivity
 
     private void setFields(String title)
     {
-
         Task task = taskDbHelper.getTaskByTitle(title);
-        editTitle.setText(task.getTitle());
+        oldTitle = task.getTitle();
+        editTitle.setText(oldTitle);
         DateTime dateTime = new DateTime(task.getTime_end());
+        date = dateTime;
         editDate.setText(String.format(Locale.getDefault(),
                 "%d/%d/%d", dateTime.getDayOfMonth(),
                 dateTime.getMonthOfYear(), dateTime.getYear()));
@@ -117,7 +118,22 @@ public class SecondScreen extends AppCompatActivity
 
     private void onEditClick()
     {
-
+        String temp = editTitle.getText().toString();
+        if (temp.equals(""))
+        {
+            editTitle.setError("Required field");
+        }
+        else
+        {
+            taskDbHelper.update(new Task(
+                    temp,
+                    editDescription.getText().toString(),
+                    date == null ? "" : date.toString(),
+                    new DateTime().toString(),
+                    editUrl.getText().toString()
+            ), oldTitle);
+            backToMainScreen();
+        }
     }
 
     private void onAddClick()
@@ -131,7 +147,7 @@ public class SecondScreen extends AppCompatActivity
         {
             taskDbHelper.addToDb(new Task(
                     temp,
-                    editDescription.getText().toString().equals("") ? NO_DESCRIPTION : CLICK_TO_SEE,
+                    editDescription.getText().toString(),
                     date == null ? "" : date.toString(),
                     new DateTime().toString(),
                     editUrl.getText().toString()
