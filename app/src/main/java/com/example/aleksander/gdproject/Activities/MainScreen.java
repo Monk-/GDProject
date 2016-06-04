@@ -15,6 +15,9 @@ import android.widget.ListView;
 import com.example.aleksander.gdproject.Database.TaskDbHelper;
 import com.example.aleksander.gdproject.Dialogs.EditDeleteDialog;
 import com.example.aleksander.gdproject.Dialogs.ShowTaskDialog;
+import com.example.aleksander.gdproject.JsonBackup.ExpoStrategy;
+import com.example.aleksander.gdproject.JsonBackup.ImportStrategy;
+import com.example.aleksander.gdproject.JsonBackup.JsonBackupStrategy;
 import com.example.aleksander.gdproject.List.Task;
 import com.example.aleksander.gdproject.List.TaskListAdapter;
 import com.example.aleksander.gdproject.R;
@@ -49,6 +52,10 @@ public class MainScreen extends AppCompatActivity
         setContentView(R.layout.activity_main_screen);
         init();
         initListView();
+//        JsonBackupStrategy jsonBackupStrategy = new ExpoStrategy();
+//        jsonBackupStrategy.backup(this);
+//        jsonBackupStrategy = new ImportStrategy();
+//        jsonBackupStrategy.backup(this);
     }
 
     private void init()

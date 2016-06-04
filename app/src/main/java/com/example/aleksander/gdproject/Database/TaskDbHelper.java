@@ -35,7 +35,7 @@ public class TaskDbHelper extends SQLiteOpenHelper
     }
 
 
-    private SQLiteDatabase connectToDb()   // get connection
+    public SQLiteDatabase connectToDb()   // get connection
     {
         return this.getWritableDatabase();
     }
