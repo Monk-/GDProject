@@ -9,4 +9,5 @@
     <string name="select_date">Select date</string>
     <string name="description">Description</string>
     <string name="url">URL</string>
+    <string name="expire_date">Expire date</string>
 </resources>

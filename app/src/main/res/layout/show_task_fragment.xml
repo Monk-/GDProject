@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+<RelativeLayout android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imagePrev"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+
+        <TextView
+            android:id="@+id/textTitlePrev"
+            android:layout_toRightOf="@+id/imagePrev"
+            android:layout_toEndOf="@+id/imagePrev"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_width="wrap_content"
+            android:textSize="25sp"
+            android:layout_height="wrap_content"
+            android:text="@string/title"/>
+
+        <TextView
+            android:id="@+id/editTitlePrev"
+            android:layout_toRightOf="@+id/imagePrev"
+            android:layout_toEndOf="@+id/imagePrev"
+            android:layout_below="@id/textTitlePrev"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/imagePrev"
+        android:background="@color/lightGreen" />
+
+
+    <TextView
+        android:id="@+id/textUrlPrev"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/imagePrev"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:text="@string/url"/>
+
+    <TextView
+        android:id="@+id/editUrlPrev"
+        android:layout_below="@id/textUrlPrev"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/url"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/editUrlPrev"
+        android:background="@color/lightGreen" />
+
+
+    <TextView
+        android:id="@+id/textEndTimePrev"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/editUrlPrev"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:text="@string/expire_date"/>
+
+    <TextView
+        android:id="@+id/editEndTimePrev"
+        android:layout_below="@id/textEndTimePrev"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/expire_date"/>
+
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/editEndTimePrev"
+        android:background="@color/lightGreen" />
+
+
+    <TextView
+        android:id="@+id/textDescriptionPrev"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/editEndTimePrev"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:text="@string/description"/>
+
+    <TextView
+        android:id="@+id/editDescriptionPrev"
+        android:layout_below="@id/textDescriptionPrev"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/description"/>
+
+
+</RelativeLayout>
+    </ScrollView>

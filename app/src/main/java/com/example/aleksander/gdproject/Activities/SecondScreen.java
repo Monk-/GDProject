@@ -62,7 +62,7 @@ public class SecondScreen extends AppCompatActivity
     private void actionTypeChange()
     {
         Intent intent = getIntent();
-        String typeAction = intent.getStringExtra("action");
+        final String typeAction = intent.getStringExtra("action");
         try
         {
             FloatingActionButton button = (FloatingActionButton) findViewById(R.id.fabSecondScreen);
@@ -70,35 +70,64 @@ public class SecondScreen extends AppCompatActivity
             {
                 case TYPE_ACTION_ADD:
                     button.setImageResource(R.drawable.ic_add_white_36dp);
-                    button.setOnClickListener(new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View v)
-                        {
-                            onAddClick();
-                        }
-
-                    });
                     break;
                 case TYPE_ACTION_EDIT:
 
                     button.setImageResource(R.drawable.ic_mode_edit_white_36dp);
-                    button.setOnClickListener(new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View v)
-                        {
-                            onEditClick();
-                        }
-
-                    });
                     setFields(intent.getStringExtra("taskTitle"));
                     break;
             }
+            button.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    onFabButtonClick(typeAction);
+                }
+
+            });
         }
         catch (NullPointerException e) // if button is NULL
         {
             e.printStackTrace();
+        }
+    }
+
+    private void onFabButtonClick(String typeAction)
+    {
+        String temp = editTitle.getText().toString();
+        if (temp.equals(""))
+        {
+            editTitle.setError("Required field");
+        }
+        else if (taskDbHelper.checkIfTaskWithThatTitleExist(temp) && !temp.equals(oldTitle))
+        {
+            editTitle.setError("There is a task with that title");
+        }
+        else
+        {
+            switch (typeAction)
+            {
+                case TYPE_ACTION_ADD:
+                    taskDbHelper.addToDb(new Task(
+                            temp,
+                            editDescription.getText().toString(),
+                            date == null ? "" : date.toString(),
+                            new DateTime().toString(),
+                            editUrl.getText().toString()
+                    ));
+                    break;
+                case TYPE_ACTION_EDIT:
+                    taskDbHelper.update(new Task(
+                            temp,
+                            editDescription.getText().toString(),
+                            date == null ? "" : date.toString(),
+                            new DateTime().toString(),
+                            editUrl.getText().toString()
+                    ), oldTitle);
+                    break;
+            }
+            backToMainScreen();
         }
     }
 
@@ -107,55 +136,17 @@ public class SecondScreen extends AppCompatActivity
         Task task = taskDbHelper.getTaskByTitle(title);
         oldTitle = task.getTitle();
         editTitle.setText(oldTitle);
-        DateTime dateTime = new DateTime(task.getTime_end());
-        date = dateTime;
-        editDate.setText(String.format(Locale.getDefault(),
-                "%d/%d/%d", dateTime.getDayOfMonth(),
-                dateTime.getMonthOfYear(), dateTime.getYear()));
+        if (!task.getTime_end().equals(""))
+        {
+            date = new DateTime(task.getTime_end());
+            editDate.setText(String.format(Locale.getDefault(),
+                    "%d/%d/%d", date.getDayOfMonth(),
+                    date.getMonthOfYear(), date.getYear()));
+        }
         editUrl.setText(task.getUrl());
         editDescription.setText(task.getDescription());
     }
 
-    private void onEditClick()
-    {
-        String temp = editTitle.getText().toString();
-        if (temp.equals(""))
-        {
-            editTitle.setError("Required field");
-        }
-        else
-        {
-            taskDbHelper.update(new Task(
-                    temp,
-                    editDescription.getText().toString(),
-                    date == null ? "" : date.toString(),
-                    new DateTime().toString(),
-                    editUrl.getText().toString()
-            ), oldTitle);
-            backToMainScreen();
-        }
-    }
-
-    private void onAddClick()
-    {
-        String temp = editTitle.getText().toString();
-        if (temp.equals(""))
-        {
-            editTitle.setError("Required field");
-        }
-        else
-        {
-            taskDbHelper.addToDb(new Task(
-                    temp,
-                    editDescription.getText().toString(),
-                    date == null ? "" : date.toString(),
-                    new DateTime().toString(),
-                    editUrl.getText().toString()
-            ));
-            backToMainScreen();
-        }
-
-    }
 
     public void backToMainScreen()
     {

@@ -154,6 +154,47 @@ public class TaskDbHelper extends SQLiteOpenHelper
     }
 
 
+    public boolean checkIfTaskWithThatTitleExist(String title)
+    {
+        SQLiteDatabase db = connectToDb();
+        boolean g = find(db, title);
+        closeDb(db);
+        return g;
+    }
+
+    private boolean find(SQLiteDatabase db, String title)
+    {
+        Cursor cursor = setCursor(db, setColumns(), title);
+        if (!(cursor.moveToFirst()) || cursor.getCount() ==0){
+            return false;
+        }
+        return true; // true if task with that title exists in db
+    }
+
+    private Cursor setCursor(SQLiteDatabase db, String[] columns, String title)
+    {
+        return db.query(ColumnNames.TaskEntry.TABLE_NAME, // a. table
+                columns, // b. column names
+                " title = ?", // c. selections
+                new String[]{title}, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+    }
+
+    private String[] setColumns() {
+        return new String[]{
+                ColumnNames.TaskEntry.COLUMN_NAME_TASK_ID,
+                ColumnNames.TaskEntry.COLUMN_NAME_TITLE,
+                ColumnNames.TaskEntry.COLUMN_NAME_DESCRIPTION,
+                ColumnNames.TaskEntry.COLUMN_NAME_TIME_END,
+                ColumnNames.TaskEntry.COLUMN_NAME_CREATED,
+                ColumnNames.TaskEntry.COLUMN_NAME_IMAGE_URL
+        };
+    }
+
+
     @Override
     public void onCreate(SQLiteDatabase db)
     {
