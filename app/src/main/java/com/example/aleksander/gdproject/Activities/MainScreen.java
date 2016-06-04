@@ -21,6 +21,8 @@ import com.example.aleksander.gdproject.R;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
+import org.joda.time.Period;
+import org.joda.time.Seconds;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -150,7 +152,8 @@ public class MainScreen extends AppCompatActivity
 
     private void sortByDate()
     {
-        Collections.sort(list, new DateComparator());
+        Collections.sort(list, new DateComparator()); // sort list by date
+        Collections.sort(list, new DateCreatedComparator()); // sort tasks without expire date
         taskListAdapter.notifyDataSetChanged();
     }
 
@@ -171,23 +174,68 @@ public class MainScreen extends AppCompatActivity
         @Override
         public int compare(Task lhs, Task rhs)
         {
-            if (lhs.getTime_end().equals(""))
+            DateTime timeNow = new DateTime();
+            if (lhs.getTime_end().equals("") && rhs.getTime_end().equals(""))
             {
-                return 1;
+                return 0;
             }
             else if (rhs.getTime_end().equals(""))
             {
                 return -1;
             }
-            else if (lhs.getTime_end().equals("") && rhs.getTime_end().equals(""))
+            else  if (lhs.getTime_end().equals(""))
             {
-                return 0;
+                return 1;
             }
             else
             {
-                DateTime leftTime = new DateTime(lhs.getTime_end());
-                DateTime rightTime = new DateTime(rhs.getTime_end());
-                return DateTimeComparator.getDateOnlyInstance().compare(leftTime, rightTime);
+                DateTime timeLeft = new DateTime(lhs.getTime_end());
+                DateTime timeRight = new DateTime(rhs.getTime_end());
+                Seconds secLeft = Seconds.secondsBetween(timeNow, timeLeft);
+                Seconds secRight = Seconds.secondsBetween(timeNow, timeRight);
+                if (secLeft.getSeconds() >= 0 && secRight.getSeconds() >= 0)
+                {
+                    return DateTimeComparator.getDateOnlyInstance().compare(timeLeft, timeRight);
+                }
+                else
+                {
+                    if (secLeft.getSeconds() < 0 && secRight.getSeconds() < 0)
+                    {
+                        return secLeft.compareTo(secRight);
+                    }
+                    else if (secLeft.getSeconds() < 0)
+                    {
+                        return 1;
+                    }
+                    else if (secRight.getSeconds() < 0)
+                    {
+                        return -1;
+                    }
+                    else
+                    {
+                        return secLeft.compareTo(secRight);
+                    }
+                }
+            }
+        }
+    }
+
+
+    static class DateCreatedComparator implements Comparator<Task>
+    {
+
+        @Override
+        public int compare(Task lhs, Task rhs)
+        {
+            if (lhs.getTime_end().equals("") && rhs.getTime_end().equals(""))
+            {
+                DateTime leftTime = new DateTime(lhs.getCreated());
+                DateTime rightTime = new DateTime(rhs.getCreated());
+                return rightTime.compareTo(leftTime);
+            }
+            else
+            {
+              return 0;
             }
         }
     }
