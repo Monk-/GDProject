@@ -13,6 +13,9 @@ import android.widget.TextView;
 import com.example.aleksander.gdproject.R;
 import com.squareup.picasso.Picasso;
 
+import org.joda.time.DateTime;
+import org.joda.time.Seconds;
+
 import java.util.List;
 
 
@@ -97,9 +100,20 @@ public class TaskListAdapter extends BaseAdapter
         if (task.getTime_end().length() >=10)
         {
             viewHolder.dateText.setText(task.getTime_end().equals("") ? NOW : task.getTime_end().substring(0, 10));
+            DateTime timeLeft = new DateTime(task.getTime_end());
+            Seconds secLeft = Seconds.secondsBetween(new DateTime(), timeLeft);
+            if (secLeft.getSeconds()<0)
+            {
+                viewHolder.iconView.setBackgroundResource(R.color.red);
+            }
+            else
+            {
+                viewHolder.iconView.setBackgroundResource(R.color.teal);
+            }
         }
         else
         {
+            viewHolder.iconView.setBackgroundResource(R.color.teal);
             viewHolder.dateText.setText(NOW);
         }
 //       async download images with volley

@@ -5,5 +5,4 @@
                   android:title="@string/sortascending" />
             <item android:id="@+id/sortByDate"
                   android:title="@string/sortbydate" />
-
 </menu>

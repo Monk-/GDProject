@@ -36,6 +36,11 @@ public class MainScreen extends AppCompatActivity
     public static TaskDbHelper taskDbHelper;
     public final static String TYPE_ACTION_ADD = "Add";
     public final static String TYPE_ACTION_EDIT = "Edit";
+    private static Sort sort = Sort.DEFAULT;
+
+    enum Sort{
+        DEFAULT, ASC, DATE
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,6 +60,7 @@ public class MainScreen extends AppCompatActivity
     private void initListView()
     {
         list = taskDbHelper.getAllTasks();
+        sortList();
         taskListAdapter = new TaskListAdapter(this, list);
         listView.setAdapter(taskListAdapter);
         listView.setLongClickable(true);
@@ -81,6 +87,24 @@ public class MainScreen extends AppCompatActivity
             }
 
         });
+    }
+
+    private void sortList()
+    {
+        switch (sort)
+        {
+            case DEFAULT:
+                list = taskDbHelper.getAllTasks();
+                break;
+            case ASC:
+                sortAscending();
+                break;
+            case DATE:
+                sortByDate();
+                break;
+            default:
+                break;
+        }
     }
 
     public void showAddActivity(View v)
@@ -132,10 +156,14 @@ public class MainScreen extends AppCompatActivity
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.sortAscending:
+                sort = Sort.ASC;
                 sortAscending();
+                taskListAdapter.notifyDataSetChanged();
                 return true;
             case R.id.sortByDate:
+                sort = Sort.DATE;
                 sortByDate();
+                taskListAdapter.notifyDataSetChanged();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -145,14 +173,12 @@ public class MainScreen extends AppCompatActivity
     private void sortAscending()
     {
         Collections.sort(list, new LexicographicComparator()); //sort list ascending
-        taskListAdapter.notifyDataSetChanged();
     }
 
     private void sortByDate()
     {
         Collections.sort(list, new DateComparator()); // sort list by date
         Collections.sort(list, new DateCreatedComparator()); // sort tasks without expire date
-        taskListAdapter.notifyDataSetChanged();
     }
 
 
@@ -205,7 +231,7 @@ public class MainScreen extends AppCompatActivity
                     }
                     else if (secLeft.getSeconds() < 0) // if left task is due date, to the end
                     {
-                        return 1;
+                        return -1;
                     }
                     else if (secRight.getSeconds() < 0) // same with right
                     {
@@ -240,4 +266,17 @@ public class MainScreen extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("sort", sort);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        sort =  (Sort) savedInstanceState.get("sort");
+    }
 }
