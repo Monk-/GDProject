@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -16,6 +19,12 @@ import com.example.aleksander.gdproject.List.Task;
 import com.example.aleksander.gdproject.List.TaskListAdapter;
 import com.example.aleksander.gdproject.R;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeComparator;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class MainScreen extends AppCompatActivity
@@ -109,5 +118,78 @@ public class MainScreen extends AppCompatActivity
         taskListAdapter.notifyDataSetChanged();
     }
 
+    /// --- MENU --- ///
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.sortAscending:
+                sortAscending();
+                return true;
+            case R.id.sortByDate:
+                sortByDate();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void sortAscending()
+    {
+        Collections.sort(list, new LexicographicComparator());
+        taskListAdapter.notifyDataSetChanged();
+    }
+
+    private void sortByDate()
+    {
+        Collections.sort(list, new DateComparator());
+        taskListAdapter.notifyDataSetChanged();
+    }
+
+
+    static class LexicographicComparator implements Comparator<Task>
+    {
+
+        @Override
+        public int compare(Task lhs, Task rhs)
+        {
+            return lhs.getTitle().compareTo(rhs.getTitle());
+        }
+    }
+
+    static class DateComparator implements Comparator<Task>
+    {
+
+        @Override
+        public int compare(Task lhs, Task rhs)
+        {
+            if (lhs.getTime_end().equals(""))
+            {
+                return 1;
+            }
+            else if (rhs.getTime_end().equals(""))
+            {
+                return -1;
+            }
+            else if (lhs.getTime_end().equals("") && rhs.getTime_end().equals(""))
+            {
+                return 0;
+            }
+            else
+            {
+                DateTime leftTime = new DateTime(lhs.getTime_end());
+                DateTime rightTime = new DateTime(rhs.getTime_end());
+                return DateTimeComparator.getDateOnlyInstance().compare(leftTime, rightTime);
+            }
+        }
+    }
 
 }
