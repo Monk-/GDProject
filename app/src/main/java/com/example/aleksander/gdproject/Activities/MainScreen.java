@@ -21,12 +21,10 @@ import com.example.aleksander.gdproject.R;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
-import org.joda.time.Period;
 import org.joda.time.Seconds;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 public class MainScreen extends AppCompatActivity
@@ -66,7 +64,7 @@ public class MainScreen extends AppCompatActivity
                                     int position, long id)
             {
                 Task task = list.get(position);
-                showPrevTask(task, position);
+                showPrevTask(task);
                 taskListAdapter.notifyDataSetChanged();
             }
         });
@@ -104,7 +102,7 @@ public class MainScreen extends AppCompatActivity
         editDeleteDialog.show(fm, "edit or delete");
     }
 
-    private void showPrevTask(Task task, int position)
+    private void showPrevTask(Task task)
     {
         FragmentManager fm = getSupportFragmentManager();
         ShowTaskDialog showTaskDialog = new ShowTaskDialog();
@@ -146,7 +144,7 @@ public class MainScreen extends AppCompatActivity
 
     private void sortAscending()
     {
-        Collections.sort(list, new LexicographicComparator());
+        Collections.sort(list, new LexicographicComparator()); //sort list ascending
         taskListAdapter.notifyDataSetChanged();
     }
 
@@ -162,7 +160,7 @@ public class MainScreen extends AppCompatActivity
     {
 
         @Override
-        public int compare(Task lhs, Task rhs)
+        public int compare(Task lhs, Task rhs)  // compare A-Z
         {
             return lhs.getTitle().compareTo(rhs.getTitle());
         }
@@ -175,15 +173,16 @@ public class MainScreen extends AppCompatActivity
         public int compare(Task lhs, Task rhs)
         {
             DateTime timeNow = new DateTime();
+            // we will sort tasks without date later
             if (lhs.getTime_end().equals("") && rhs.getTime_end().equals(""))
             {
                 return 0;
             }
-            else if (rhs.getTime_end().equals(""))
+            else if (rhs.getTime_end().equals("")) // if task without date - to the end
             {
                 return -1;
             }
-            else  if (lhs.getTime_end().equals(""))
+            else  if (lhs.getTime_end().equals("")) // if task without date - to the end
             {
                 return 1;
             }
@@ -193,27 +192,28 @@ public class MainScreen extends AppCompatActivity
                 DateTime timeRight = new DateTime(rhs.getTime_end());
                 Seconds secLeft = Seconds.secondsBetween(timeNow, timeLeft);
                 Seconds secRight = Seconds.secondsBetween(timeNow, timeRight);
+                // if we have time to expire date just compare
                 if (secLeft.getSeconds() >= 0 && secRight.getSeconds() >= 0)
                 {
                     return DateTimeComparator.getDateOnlyInstance().compare(timeLeft, timeRight);
                 }
                 else
-                {
+                {   // if we don't compare due time
                     if (secLeft.getSeconds() < 0 && secRight.getSeconds() < 0)
                     {
                         return secLeft.compareTo(secRight);
                     }
-                    else if (secLeft.getSeconds() < 0)
+                    else if (secLeft.getSeconds() < 0) // if left task is due date, to the end
                     {
                         return 1;
                     }
-                    else if (secRight.getSeconds() < 0)
+                    else if (secRight.getSeconds() < 0) // same with right
                     {
                         return -1;
                     }
                     else
                     {
-                        return secLeft.compareTo(secRight);
+                        return secLeft.compareTo(secRight); // if up to date, just compare
                     }
                 }
             }
@@ -225,15 +225,15 @@ public class MainScreen extends AppCompatActivity
     {
 
         @Override
-        public int compare(Task lhs, Task rhs)
+        public int compare(Task lhs, Task rhs) // here we compare tasks without expire date
         {
             if (lhs.getTime_end().equals("") && rhs.getTime_end().equals(""))
             {
                 DateTime leftTime = new DateTime(lhs.getCreated());
                 DateTime rightTime = new DateTime(rhs.getCreated());
-                return rightTime.compareTo(leftTime);
+                return rightTime.compareTo(leftTime); // compare by created date
             }
-            else
+            else   // we have no interest in other tasks
             {
               return 0;
             }

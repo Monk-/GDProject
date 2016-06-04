@@ -77,15 +77,18 @@ public class SecondScreen extends AppCompatActivity
                     setFields(intent.getStringExtra("taskTitle"));
                     break;
             }
-            button.setOnClickListener(new View.OnClickListener()
+            if (button != null)
             {
-                @Override
-                public void onClick(View v)
+                button.setOnClickListener(new View.OnClickListener()
                 {
-                    onFabButtonClick(typeAction);
-                }
+                    @Override
+                    public void onClick(View v)
+                    {
+                        onFabButtonClick(typeAction);
+                    }
 
-            });
+                });
+            }
         }
         catch (NullPointerException e) // if button is NULL
         {
