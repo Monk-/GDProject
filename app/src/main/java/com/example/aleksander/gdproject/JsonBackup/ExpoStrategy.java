@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.aleksander.gdproject.Database.ColumnNames;
 
@@ -84,9 +85,13 @@ public class ExpoStrategy extends  JsonBackupStrategy
             os.writeObject(resultSet.toString());
             os.close();
             fos.close();
+            Toast.makeText(activity, "Db exported to Json",
+                    Toast.LENGTH_LONG).show();
         }
         catch (IOException e)
         {
+            Toast.makeText(activity, "There is some problem with importing",
+                    Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 

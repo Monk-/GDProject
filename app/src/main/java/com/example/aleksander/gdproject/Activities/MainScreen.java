@@ -3,8 +3,10 @@ package com.example.aleksander.gdproject.Activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -46,10 +48,23 @@ public class MainScreen extends AppCompatActivity
     public final static String TYPE_ACTION_EDIT = "Edit";
     private static Sort sort = Sort.DEFAULT;
     private static boolean isPermissionGranted;
-    private JsonBackupStrategy jsonBackupStrategy;
+    static SharedPreferences prefs;
 
     enum Sort{
-        DEFAULT, ASC, DATE
+        DEFAULT("DEFAULT"), ASC("ASC"), DATE("DATE");
+
+        private String sorti;
+
+        Sort(String sorti)
+        {
+            this.sorti = sorti;
+        }
+
+        public String getSorti()
+        {
+            return sorti;
+        }
+
     }
 
     @Override
@@ -58,6 +73,7 @@ public class MainScreen extends AppCompatActivity
         super.onCreate(savedInstanceState);
         isPermissionGranted = checkWriteExternalPermission();
         setContentView(R.layout.activity_main_screen);
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         init();
         initListView();
         requestPermissions();
@@ -154,6 +170,7 @@ public class MainScreen extends AppCompatActivity
 
     private void sortList()
     {
+        sort = stringToEnum(prefs.getString("sort", "DEFAULT"));
         switch (sort)
         {
             case DEFAULT:
@@ -205,11 +222,6 @@ public class MainScreen extends AppCompatActivity
         taskListAdapter.notifyDataSetChanged();
     }
 
-    public void onUpdateBack()
-    {
-        list = taskDbHelper.getAllTasks();
-        taskListAdapter.notifyDataSetChanged();
-    }
 
     /// --- MENU --- ///
 
@@ -223,20 +235,26 @@ public class MainScreen extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
+        SharedPreferences.Editor editor = prefs.edit();
         switch (item.getItemId()) {
             case R.id.sortAscending:
                 sort = Sort.ASC;
+                editor.putString("sort", sort.getSorti());
+                editor.apply();
                 sortAscending();
                 taskListAdapter.notifyDataSetChanged();
                 return true;
             case R.id.sortByDate:
                 sort = Sort.DATE;
+                editor.putString("sort", sort.getSorti());
+                editor.apply();
                 sortByDate();
                 taskListAdapter.notifyDataSetChanged();
                 return true;
             case R.id.exportJson:
                 if (isPermissionGranted)
                 {
+                    JsonBackupStrategy jsonBackupStrategy;
                     jsonBackupStrategy = new ExpoStrategy();
                     jsonBackupStrategy.backup(this);
                     list = taskDbHelper.getAllTasks();
@@ -248,6 +266,7 @@ public class MainScreen extends AppCompatActivity
             case R.id.importJson:
                 if (isPermissionGranted)
                 {
+                    JsonBackupStrategy jsonBackupStrategy;
                     jsonBackupStrategy = new ImportStrategy();
                     jsonBackupStrategy.backup(this);
                     list = taskDbHelper.getAllTasks();
@@ -260,6 +279,21 @@ public class MainScreen extends AppCompatActivity
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    public Sort stringToEnum(String s)
+    {
+        switch(s)
+        {
+            case "ASC":
+                return Sort.ASC;
+            case "DATE":
+                return Sort.DATE;
+            default:
+                return Sort.DEFAULT;
+
+        }
+
     }
 
     private void sortAscending()
@@ -361,15 +395,15 @@ public class MainScreen extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
-        super.onSaveInstanceState(outState);
         outState.putSerializable("sort", sort);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
-        super.onRestoreInstanceState(savedInstanceState);
         sort =  (Sort) savedInstanceState.get("sort");
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
 }

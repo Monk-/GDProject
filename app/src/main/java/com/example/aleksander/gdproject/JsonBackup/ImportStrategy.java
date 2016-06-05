@@ -2,6 +2,7 @@ package com.example.aleksander.gdproject.JsonBackup;
 
 import android.app.Activity;
 import android.os.Environment;
+import android.widget.Toast;
 
 import com.example.aleksander.gdproject.Database.ColumnNames;
 import com.example.aleksander.gdproject.List.Task;
@@ -24,7 +25,7 @@ public class ImportStrategy extends JsonBackupStrategy
     {
         try
         {
-            File file = new File(Environment.getExternalStorageDirectory() + "/BackupFolder/TaskDB");
+            File file = new File(Environment.getExternalStorageDirectory() + pathToDb);
             if (file.exists())
             {
                 FileInputStream fis = new FileInputStream(file);
@@ -53,9 +54,16 @@ public class ImportStrategy extends JsonBackupStrategy
                     }
                 }
             }
+            else
+            {
+                Toast.makeText(activity, "There is no Json DB to import from!",
+                        Toast.LENGTH_LONG).show();
+            }
         }
         catch (IOException | ClassNotFoundException | JSONException ex)
         {
+            Toast.makeText(activity, "There is some problem with importing",
+                    Toast.LENGTH_LONG).show();
             ex.printStackTrace();
         }
     }
