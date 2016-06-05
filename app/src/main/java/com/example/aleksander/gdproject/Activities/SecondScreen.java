@@ -24,7 +24,6 @@ import java.util.Locale;
 import static com.example.aleksander.gdproject.Activities.MainScreen.TYPE_ACTION_ADD;
 import static com.example.aleksander.gdproject.Activities.MainScreen.TYPE_ACTION_EDIT;
 import static com.example.aleksander.gdproject.Activities.MainScreen.taskDbHelper;
-import com.example.aleksander.gdproject.Activities.MainScreen;
 
 public class SecondScreen extends AppCompatActivity
 {
@@ -70,7 +69,7 @@ public class SecondScreen extends AppCompatActivity
             switch (typeAction)
             {
                 case TYPE_ACTION_ADD:
-                    button.setImageResource(R.drawable.ic_add_white_36dp);
+                    button.setImageResource(R.drawable.ic_done_white_24dp);
                     break;
                 case TYPE_ACTION_EDIT:
 
@@ -120,6 +119,7 @@ public class SecondScreen extends AppCompatActivity
                             new DateTime().toString(),
                             editUrl.getText().toString()
                     ));
+                    date = null;
                     break;
                 case TYPE_ACTION_EDIT:
                     taskDbHelper.update(new Task(
@@ -129,6 +129,7 @@ public class SecondScreen extends AppCompatActivity
                             new DateTime().toString(),
                             editUrl.getText().toString()
                     ), oldTitle);
+                    date = null;
                     break;
             }
             backToMainScreen();
