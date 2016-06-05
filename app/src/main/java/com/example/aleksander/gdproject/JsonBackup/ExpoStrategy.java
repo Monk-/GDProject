@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.aleksander.gdproject.Database.ColumnNames;
@@ -12,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -64,14 +64,24 @@ public class ExpoStrategy extends  JsonBackupStrategy
         }
         cursor.close();
         Log.d("TAG_NAME", resultSet.toString() );
-        String currentDBPath = "//data//" + "com.example.aleksander.gdproject"
-                + "//databases//" + DATABASE_NAME;
-        FileOutputStream fos = null;
+        File sd = Environment.getExternalStorageDirectory();
+        FileOutputStream fos;
         try
         {
-            fos = new FileOutputStream (new File(currentDBPath), true);
+            File direct = new File(Environment.getExternalStorageDirectory() + "/BackupFolder");
+
+            if (!direct.exists())
+            {
+                direct.mkdir(); // create directory if doesn't exist
+            }
+
+            File file = new File(sd, pathToDb);
+            if(!file.exists()) {
+               file.createNewFile();  // create file
+            }
+            fos = new FileOutputStream (file, true);
             ObjectOutputStream os = new ObjectOutputStream(fos);
-            os.writeObject(this);
+            os.writeObject(resultSet.toString());
             os.close();
             fos.close();
         }

@@ -24,6 +24,7 @@ import java.util.Locale;
 import static com.example.aleksander.gdproject.Activities.MainScreen.TYPE_ACTION_ADD;
 import static com.example.aleksander.gdproject.Activities.MainScreen.TYPE_ACTION_EDIT;
 import static com.example.aleksander.gdproject.Activities.MainScreen.taskDbHelper;
+import com.example.aleksander.gdproject.Activities.MainScreen;
 
 public class SecondScreen extends AppCompatActivity
 {
@@ -185,4 +186,6 @@ public class SecondScreen extends AppCompatActivity
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
     }
+
+
 }

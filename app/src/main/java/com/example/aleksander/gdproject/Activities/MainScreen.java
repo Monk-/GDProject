@@ -1,9 +1,13 @@
 package com.example.aleksander.gdproject.Activities;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,6 +37,7 @@ import java.util.List;
 public class MainScreen extends AppCompatActivity
 {
 
+    private final static int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
     private TaskListAdapter taskListAdapter;
     private ListView listView;
     private static List<Task> list;
@@ -40,6 +45,8 @@ public class MainScreen extends AppCompatActivity
     public final static String TYPE_ACTION_ADD = "Add";
     public final static String TYPE_ACTION_EDIT = "Edit";
     private static Sort sort = Sort.DEFAULT;
+    private static boolean isPermissionGranted;
+    private JsonBackupStrategy jsonBackupStrategy;
 
     enum Sort{
         DEFAULT, ASC, DATE
@@ -49,13 +56,62 @@ public class MainScreen extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        isPermissionGranted = checkWriteExternalPermission();
         setContentView(R.layout.activity_main_screen);
         init();
         initListView();
-//        JsonBackupStrategy jsonBackupStrategy = new ExpoStrategy();
-//        jsonBackupStrategy.backup(this);
-//        jsonBackupStrategy = new ImportStrategy();
-//        jsonBackupStrategy.backup(this);
+        requestPermissions();
+    }
+
+
+    private boolean checkWriteExternalPermission()
+    {
+
+        String permission = "android.permission.WRITE_EXTERNAL_STORAGE";
+        int res = this.checkCallingOrSelfPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermissions() // permission handling for android 6.0
+    {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    isPermissionGranted = true;
+
+
+                } else {
+                    isPermissionGranted = false;
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                break;
+            }
+
+        }
     }
 
     private void init()
@@ -149,6 +205,12 @@ public class MainScreen extends AppCompatActivity
         taskListAdapter.notifyDataSetChanged();
     }
 
+    public void onUpdateBack()
+    {
+        list = taskDbHelper.getAllTasks();
+        taskListAdapter.notifyDataSetChanged();
+    }
+
     /// --- MENU --- ///
 
     @Override
@@ -172,9 +234,32 @@ public class MainScreen extends AppCompatActivity
                 sortByDate();
                 taskListAdapter.notifyDataSetChanged();
                 return true;
+            case R.id.exportJson:
+                if (isPermissionGranted)
+                {
+                    jsonBackupStrategy = new ExpoStrategy();
+                    jsonBackupStrategy.backup(this);
+                    list = taskDbHelper.getAllTasks();
+                    sortList();
+                    taskListAdapter = new TaskListAdapter(this, list);
+                    listView.setAdapter(taskListAdapter);
+                }
+                break;
+            case R.id.importJson:
+                if (isPermissionGranted)
+                {
+                    jsonBackupStrategy = new ImportStrategy();
+                    jsonBackupStrategy.backup(this);
+                    list = taskDbHelper.getAllTasks();
+                    sortList();
+                    taskListAdapter = new TaskListAdapter(this, list);
+                    listView.setAdapter(taskListAdapter);
+                }
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     private void sortAscending()
@@ -286,4 +371,5 @@ public class MainScreen extends AppCompatActivity
         super.onRestoreInstanceState(savedInstanceState);
         sort =  (Sort) savedInstanceState.get("sort");
     }
+
 }

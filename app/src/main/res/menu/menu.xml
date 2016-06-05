@@ -5,4 +5,8 @@
                   android:title="@string/sortascending" />
             <item android:id="@+id/sortByDate"
                   android:title="@string/sortbydate" />
+    <item android:id="@+id/exportJson"
+          android:title="@string/export_db_to_json" />
+    <item android:id="@+id/importJson"
+          android:title="@string/import_db_from_json" />
 </menu>

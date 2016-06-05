@@ -91,7 +91,7 @@ public class TaskDbHelper extends SQLiteOpenHelper
         {
             do
             {
-                Task task = new Task(cursor.getString(1), cursor.getString(2),
+                Task task = new Task(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
                         cursor.getString(3), cursor.getString(4), cursor.getString(5));
                 list.add(task);
             }
@@ -119,7 +119,7 @@ public class TaskDbHelper extends SQLiteOpenHelper
     {
         if (cursor.moveToFirst())
         {
-            return new Task(cursor.getString(1), cursor.getString(2),
+            return new Task(cursor.getInt(0),cursor.getString(1), cursor.getString(2),
                     cursor.getString(3), cursor.getString(4), cursor.getString(5));
         }
         return null;
@@ -154,6 +154,19 @@ public class TaskDbHelper extends SQLiteOpenHelper
     }
 
 
+    public void updateById(Task task, String id)
+    {
+        SQLiteDatabase db = connectToDb();
+        ContentValues cv = new ContentValues();
+        cv.put(ColumnNames.TaskEntry.COLUMN_NAME_TITLE, task.getTitle());
+        cv.put(ColumnNames.TaskEntry.COLUMN_NAME_TIME_END, task.getTime_end());
+        cv.put(ColumnNames.TaskEntry.COLUMN_NAME_IMAGE_URL, task.getUrl());
+        cv.put(ColumnNames.TaskEntry.COLUMN_NAME_DESCRIPTION, task.getDescription());
+        cv.put(ColumnNames.TaskEntry.COLUMN_NAME_CREATED, new DateTime().toString());
+        db.update(ColumnNames.TaskEntry.TABLE_NAME, cv, "taskid=?", new String[]{id});
+        closeDb(db);
+    }
+
     public boolean checkIfTaskWithThatTitleExist(String title)
     {
         SQLiteDatabase db = connectToDb();
@@ -162,7 +175,24 @@ public class TaskDbHelper extends SQLiteOpenHelper
         return g;
     }
 
-    private boolean find(SQLiteDatabase db, String title)
+    private boolean find(SQLiteDatabase db, String id)
+    {
+        Cursor cursor = setCursorID(db, setColumns(), id);
+        if (!(cursor.moveToFirst()) || cursor.getCount() ==0){
+            return false;
+        }
+        return true; // true if task with that id exists in db
+    }
+
+    public boolean checkIfTaskWithThatIdExist(String id)
+    {
+        SQLiteDatabase db = connectToDb();
+        boolean g = find(db, id);
+        closeDb(db);
+        return g;
+    }
+
+    private boolean findByTitle(SQLiteDatabase db, String title)
     {
         Cursor cursor = setCursor(db, setColumns(), title);
         if (!(cursor.moveToFirst()) || cursor.getCount() ==0){
@@ -176,6 +206,18 @@ public class TaskDbHelper extends SQLiteOpenHelper
         return db.query(ColumnNames.TaskEntry.TABLE_NAME, // a. table
                 columns, // b. column names
                 " title = ?", // c. selections
+                new String[]{title}, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+    }
+
+    private Cursor setCursorID(SQLiteDatabase db, String[] columns, String title)
+    {
+        return db.query(ColumnNames.TaskEntry.TABLE_NAME, // a. table
+                columns, // b. column names
+                " taskid = ?", // c. selections
                 new String[]{title}, // d. selections args
                 null, // e. group by
                 null, // f. having
