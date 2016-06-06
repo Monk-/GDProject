@@ -19,3 +19,6 @@ Test project for GD/ TaskMaster
 - Fields for edit or create new task.
 - Depends on action (edit/delete) button change its picture so user knows what he is doing.
 - Title field is required and unique, if there is already title like that in DB or there is no title user will see information about error.
+
+
+Generated program is on GitHub too - `app-release.apk`
