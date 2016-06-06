@@ -71,8 +71,10 @@ public class MainScreen extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        isPermissionGranted = checkWriteExternalPermission();
         setContentView(R.layout.activity_main_screen);
+        isPermissionGranted = checkWriteExternalPermission();
+        if (getActionBar()!= null)
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         init();
         initListView();
@@ -274,6 +276,9 @@ public class MainScreen extends AppCompatActivity
                     taskListAdapter = new TaskListAdapter(this, list);
                     listView.setAdapter(taskListAdapter);
                 }
+                break;
+            case android.R.id.home:
+                finish();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
