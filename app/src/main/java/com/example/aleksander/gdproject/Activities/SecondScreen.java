@@ -155,7 +155,8 @@ public class SecondScreen extends AppCompatActivity
 
     public void backToMainScreen()
     {
-        Intent myIntent = new Intent(SecondScreen.this, MainScreen.class);
+        Intent myIntent = new Intent(SecondScreen.this, MainScreen.class)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         SecondScreen.this.startActivity(myIntent);
     }
 

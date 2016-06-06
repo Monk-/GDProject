@@ -170,7 +170,7 @@ public class TaskDbHelper extends SQLiteOpenHelper
     public boolean checkIfTaskWithThatTitleExist(String title)
     {
         SQLiteDatabase db = connectToDb();
-        boolean g = find(db, title);
+        boolean g = findByTitle(db, title);
         closeDb(db);
         return g;
     }
