@@ -10,7 +10,7 @@ Test project for GD/ TaskMaster
 - Short click on list item - DialogFragment with extended information about item.
 - Long click on list item - DialogFragment with possibilities to edit or delete item.
 - All images are download asynchronous with Picasso. (or with Volley, Volley code is commented)
-  `Settings`
+  - `Settings`
   - In settings user can sort list ascending or by date.
   - Import DB to JSON.
   - Export DB from JSON, if there is no DB to export user will get error message.
